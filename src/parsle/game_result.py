@@ -33,12 +33,12 @@ class GameResult(ABC):
         or override the comparison function.
 
         The general sorting function is:
-          - only results from the same game can be compared.
-          - a winning game is "greater than" a losing game
-          - fields are compared in descending priority in the order they are declared,
-           if they are annotated with "higher_is_better"
-          - if a field is annotated with "higher_is_better": True, a game with a higher
-           value of that field is greater than a game with a lower value; and vice versa
+            - only results from the same game can be compared.
+            - a winning game is "greater than" a losing game
+            - fields are compared in descending priority in the order they are declared,
+            if they are annotated with "higher_is_better"
+            - if a field is annotated with "higher_is_better": True, a game with a higher
+            value of that field is greater than a game with a lower value; and vice versa
         This sorting can be overridden by subclasses.
         """
         if not isinstance(other, type(self)):
@@ -99,7 +99,7 @@ class RegexGameResult(GameResult):
         super().__init__(name, url)
         pattern = re.compile(regex, flags=re.MULTILINE)
         match = pattern.search(text)
-        assert match is not None
+        assert match is not None, f"Not a {self.name} game"
 
         self.raw = match.groupdict()
         for field in fields(self):

@@ -32,6 +32,7 @@ TEXT_FAIL = """Wordle 1,022 X/6
 
 def test_parse_success():
     result = Wordle(TEXT_PASS_2)
+    assert result.is_winning()
     assert result.name == "Wordle"
     assert result.age == 1022
     assert result.tries == 2
@@ -40,6 +41,7 @@ def test_parse_success():
 
 def test_parse_fail():
     result = Wordle(TEXT_FAIL)
+    assert not result.is_winning()
     assert result.tries == None
     assert result.age == 1022
 
