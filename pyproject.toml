@@ -3,11 +3,11 @@ requires = ["flit"]
 build-backend = "flit.buildapi"
 
 [project]
-name =  "py-project-toml"
+name =  "parsle"
 authors = [
-    {name = "Daniel Ciborowski", email = "dciborow@microsoft.com"},
+    {name = "Giulio Muscarello", email = "capacitorset@gmail.com"},
 ]
-description = "Sample Python Project for creating a new Python Module"
+description = "A Python library to parse results from Wordle and other games."
 readme = "README.md"
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -19,13 +19,10 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11"
 ]
-requires-python = ">=3.8.1"
+requires-python = ">=3.9"
 dynamic = ["version"]
 
 [project.optional-dependencies]
-spark = [
-    "pyspark>=3.0.0"
-]
 test = [
     "bandit[toml]==1.7.5",
     "black==23.3.0",
@@ -46,13 +43,8 @@ test = [
     "shellcheck-py==0.9.0.2"
 ]
 
-[project.urls]
-Documentation = "https://github.com/microsoft/python-package-template/tree/main#readme"
-Source = "https://github.com/microsoft/python-package-template"
-Tracker = "https://github.com/microsoft/python-package-template/issues"
-
 [tool.flit.module]
-name = "python_package"
+name = "parsle"
 
 [tool.bandit]
 exclude_dirs = ["build","dist","tests","scripts"]
@@ -111,62 +103,29 @@ executionEnvironments = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "--cov-report xml:coverage.xml --cov src --cov-fail-under 0 --cov-append -m 'not integration'"
+# addopts = "--cov-report xml:coverage.xml --cov src --cov-fail-under 0 --cov-append -m 'not integration'"
 pythonpath = [
   "src"
 ]
 testpaths = "tests"
 junit_family = "xunit2"
-markers = [
-    "integration: marks as integration test",
-    "notebooks: marks as notebook test",
-    "gpu: marks as gpu test",
-    "spark: marks tests which need Spark",
-    "slow: marks tests as slow",
-    "unit: fast offline tests",
-]
 
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py, integration, spark, all
+envlist = py, all
 
 [testenv]
 commands =
-    pytest -m "not integration and not spark" {posargs}
-
-[testenv:integration]
-commands =
-    pytest -m "integration" {posargs}
-
-[testenv:spark]
-extras = spark
-setenv =
-       PYSPARK_DRIVER_PYTHON = {envpython}
-       PYSPARK_PYTHON = {envpython}
-commands =
-    pytest -m "spark" {posargs}
+    pytest {posargs}
 
 [testenv:all]
 extras = all
-setenv =
-       PYSPARK_DRIVER_PYTHON = {envpython}
-       PYSPARK_PYTHON = {envpython}
 commands =
     pytest {posargs}
 """
 
 [tool.pylint]
-extension-pkg-whitelist= [
-    "numpy",
-    "torch",
-    "cv2",
-    "pyodbc",
-    "pydantic",
-    "ciso8601",
-    "netcdf4",
-    "scipy"
-]
 ignore="CVS"
 ignore-patterns="test.*?py,conftest.py"
 init-hook='import sys; sys.setrecursionlimit(8 * sys.getrecursionlimit())'
@@ -252,7 +211,7 @@ check-str-concat-over-line-jumps="no"
 
 [tool.pylint.'TYPECHECK']
 contextmanager-decorators="contextlib.contextmanager"
-generated-members="numpy.*,np.*,pyspark.sql.functions,collect_list"
+generated-members="numpy.*,np.*,collect_list"
 ignore-mixin-members="yes"
 ignore-none="yes"
 ignore-on-opaque-inference="yes"
